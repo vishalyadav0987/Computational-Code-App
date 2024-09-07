@@ -9,6 +9,84 @@ html {
   overflow-x: hidden;
 }
 
+/* For WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
-  display: none;
+  width: 6px; /* Width of the scrollbar */
+  height: 4px;
 }
+
+::-webkit-scrollbar-track {
+  background: #101010; /* Background of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar handle */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the handle on hover */
+}
+
+
+
+
+
+
+.codesandbox-box-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* Full viewport height to center the loader vertically */
+  background-color: #f4f4f5;
+  /* Background color for the loader screen */
+}
+
+.box {
+  width: 40px;
+  /* Box width */
+  height: 40px;
+  /* Box height */
+  background-color: #333;
+  /* Box color */
+  animation: rotate-scale 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+  /* Animation with timing function */
+}
+
+@keyframes rotate-scale {
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+    /* Initial and final state: no rotation, normal size */
+  }
+
+  50% {
+    transform: rotate(90deg) scale(0.5);
+    /* Rotate 90 degrees and scale down */
+  }
+
+  75% {
+    transform: rotate(180deg) scale(1.2);
+    /* Rotate 180 degrees and scale up */
+  }
+}
+
+
+/*  */
+
+@keyframes pulse {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+  50% {
+    transform: scale(1.5) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+
+
+
+
