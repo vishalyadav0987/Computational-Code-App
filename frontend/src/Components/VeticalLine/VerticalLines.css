@@ -1,0 +1,32 @@
+.vertical-lines {
+    position: absolute;
+    top: 8%;
+    left: -8%;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.vertical-line {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ed8936);
+    animation: glow 9s infinite ease-in-out;
+    opacity: 0.7;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        height: 0;
+        box-shadow: 0 0 10px rgba(237, 137, 54, 0.5);
+    }
+
+    50% {
+        height: 100%;
+        box-shadow: 0 0 20px #ed8936;
+    }
+}
