@@ -1,0 +1,45 @@
+.hero-section {
+  position: absolute;
+  width: 100%;
+  height: 90vh;
+  z-index: -1;
+}
+
+.grid-background {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 100px);
+  grid-template-rows: repeat(10, 100px);
+  pointer-events: none;
+}
+
+.grid-cell {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.dark-cell {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.light-cell {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.bubble {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
