@@ -10,12 +10,19 @@ import {
     Image,
 
 } from '@chakra-ui/react'
+import AnimatedButton from '../AnimatedButton/AnimatedButton'
+import AnimatedBoxes from '../Animated/Animated'
+import VerticalLines from '../VeticalLine/VerticalLines'
+import AnimatedCircles from '../AnimatedCircles/AnimatedCircles'
+import ScrollingDivs from '../ScrollingDivs/ScrollingDivs'
 
 
 
 export default function HeroSection() {
     return (
-        <Container maxW={'5xl'}>
+        <Container maxW={'5xl'} position={"relative"} zIndex={"5"}>
+            <VerticalLines />
+            <AnimatedBoxes />
             <Stack
                 textAlign={'center'}
                 align={'center'}
@@ -34,22 +41,25 @@ export default function HeroSection() {
                     Unlock your coding potential with hands-on challenges, real-time collaboration, and expert-led courses. Join our community of developers and turn your passion for coding into mastery today!
                 </Text>
                 <Stack spacing={6} direction={'row'}>
-                    <Button
+                    {/* <Button
                         rounded={'full'}
                         px={6}
                         colorScheme={'orange'}
                         bg={'orange.400'}
                         _hover={{ bg: 'orange.500' }}>
                         Get started
-                    </Button>
-                    <Button rounded={'full'} px={6}>
+                    </Button> */}
+                    <AnimatedButton value={"Get Started"} color={"#ed8936"} />
+                    {/* <Button rounded={'full'} px={6}>
                         Create Account
-                    </Button>
+                    </Button> */}
+                    <AnimatedButton value={"Create Account"} color={"#fff"} />
                 </Stack>
                 <Flex w={'full'} justifyContent={"center"}>
                     <Image width={"400px"} src='./hero1.png' />
                 </Flex>
             </Stack>
+            {/* <ScrollingDivs /> */}
         </Container>
     )
 }

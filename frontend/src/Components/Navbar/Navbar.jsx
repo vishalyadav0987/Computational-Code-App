@@ -14,7 +14,8 @@ import {
     useDisclosure,
     useColorModeValue,
     Stack,
-    Image
+    Image,
+    useColorMode
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { MdAssignmentInd } from "react-icons/md";
@@ -44,6 +45,7 @@ const NavLink = ({ children }) => {
 
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { colorMode, toggleColorMode } = useColorMode()
 
     return (
         <>
@@ -60,7 +62,7 @@ export default function Navbar() {
                     />
                     <HStack spacing={8} alignItems="center">
                         <Box>
-                            <Image cursor={"pointer"} width={"140px"} src="./logo-4.png" />
+                            <Image onClick={toggleColorMode} cursor={"pointer"} width={"140px"} src="./logo-4.png" />
                         </Box>
                         <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
                             {Links.map((link) => (
