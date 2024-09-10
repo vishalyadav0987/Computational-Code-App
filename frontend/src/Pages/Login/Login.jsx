@@ -44,12 +44,12 @@ export default function Login() {
                     <Stack spacing={4} width={"380px"}>
                         <FormControl id="email" isRequired>
                             <FormLabel>Email address</FormLabel>
-                            <Input type="email" />
+                            <Input focusBorderColor='#ed8936' type="email" placeholder='Enter email here' />
                         </FormControl>
                         <FormControl id="password" isRequired>
                             <FormLabel>Password</FormLabel>
                             <InputGroup>
-                                <Input type={showPassword ? 'text' : 'password'} />
+                                <Input focusBorderColor='#ed8936' type={showPassword ? 'text' : 'password'} placeholder='Enter password here'/>
                                 <InputRightElement h={'full'}>
                                     <Button
                                         variant={'ghost'}
@@ -63,10 +63,10 @@ export default function Login() {
                             <Button
                                 loadingText="Submitting"
                                 size="lg"
-                                bg={'blue.400'}
+                                bg={"#ed8936"}
                                 color={'white'}
                                 _hover={{
-                                    bg: 'blue.500',
+                                    bg: 'orange.500',
                                 }}>
                                 Sign up
                             </Button>

@@ -45,25 +45,25 @@ export default function Register() {
                         <HStack>
                             <Box>
                                 <FormControl id="firstName" isRequired>
-                                    <FormLabel>First Name</FormLabel>
-                                    <Input type="text" />
+                                    <FormLabel>Name</FormLabel>
+                                    <Input placeholder='Enter name' focusBorderColor='#ed8936' type="text" />
                                 </FormControl>
                             </Box>
                             <Box>
-                                <FormControl id="lastName">
-                                    <FormLabel>Last Name</FormLabel>
-                                    <Input type="text" />
+                                <FormControl id="lastName" isRequired>
+                                    <FormLabel>Username</FormLabel>
+                                    <Input placeholder='Enter username' focusBorderColor='#ed8936' type="text" />
                                 </FormControl>
                             </Box>
                         </HStack>
                         <FormControl id="email" isRequired>
                             <FormLabel>Email address</FormLabel>
-                            <Input type="email" />
+                            <Input placeholder='Enter email' focusBorderColor='#ed8936' type="email" />
                         </FormControl>
                         <FormControl id="password" isRequired>
                             <FormLabel>Password</FormLabel>
                             <InputGroup>
-                                <Input type={showPassword ? 'text' : 'password'} />
+                                <Input focusBorderColor='#ed8936' type={showPassword ? 'text' : 'password'} placeholder='Enter password' />
                                 <InputRightElement h={'full'}>
                                     <Button
                                         variant={'ghost'}
@@ -77,10 +77,10 @@ export default function Register() {
                             <Button
                                 loadingText="Submitting"
                                 size="lg"
-                                bg={'blue.400'}
+                                bg={'#ed8936'}
                                 color={'white'}
                                 _hover={{
-                                    bg: 'blue.500',
+                                    bg: 'orange.500',
                                 }}>
                                 Sign up
                             </Button>
