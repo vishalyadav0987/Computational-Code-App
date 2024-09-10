@@ -1,104 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval, getMonth } from 'date-fns';
+import React from 'react';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css'; // Import the default styles
+import { Box, Text, Flex } from '@chakra-ui/react';
+
+// Function to generate random streak data for one year
+const generateStreakData = () => {
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setFullYear(today.getFullYear() - 1); // One year back
+
+    const data = [];
+    for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
+        data.push({
+            date: d.toISOString().slice(0, 10), // Format date as YYYY-MM-DD
+            count: Math.floor(Math.random() * 4), // Random count from 0 to 3 (representing activity level)
+        });
+    }
+
+    return data;
+};
 
 const StreakPage = () => {
-    const [streaks, setStreaks] = useState({}); // { 'YYYY-MM-DD': true }
-    const [datesByMonth, setDatesByMonth] = useState([]);
-
-    useEffect(() => {
-        // Generate dates for each month of the current year
-        const today = new Date();
-        const year = today.getFullYear();
-        const months = Array.from({ length: 12 }, (_, i) => i); // [0, 1, ..., 11]
-
-        const allDatesByMonth = months.map((month) => {
-            const startDate = startOfMonth(new Date(year, month));
-            const endDate = endOfMonth(startDate);
-            return eachDayOfInterval({ start: startDate, end: endDate });
-        });
-
-        setDatesByMonth(allDatesByMonth);
-    }, []);
-
-    const handleCorrectSubmission = (date) => {
-        const formattedDate = format(date, 'yyyy-MM-dd');
-        setStreaks((prevStreaks) => ({ ...prevStreaks, [formattedDate]: true }));
-    };
-
-    const renderMonth = (monthDates, monthIndex) => {
-        // Get month name using date-fns
-        const monthName = format(monthDates[0], 'MMMM'); // Get the full month name
-
-        return (
-            <div
-                key={monthIndex}
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(5, 10px)',
-                    gridTemplateRows: 'repeat(7, 10px)',
-                    gap: '2px',
-                    marginBottom: '30px', // Space between months
-                    alignItems: 'center',
-                    justifyItems: 'center'
-                }}
-            >
-                {monthDates.map((date) => {
-                    const formattedDate = format(date, 'yyyy-MM-dd');
-                    const isGreen = streaks[formattedDate];
-
-                    return (
-                        <div
-                            key={formattedDate}
-                            onClick={() => handleCorrectSubmission(date)}
-                            style={{
-                                width: '10px',
-                                height: '10px',
-                                backgroundColor: isGreen ? 'green' : 'lightgray',
-                                textAlign: 'center',
-                                lineHeight: '40px',
-                                cursor: 'pointer',
-                                border: '1px solid #ccc',
-                                borderRadius: '4px',
-                            }}
-                        >
-                            {/* {date.getDate()} */}
-                        </div>
-                    );
-                })}
-                {/* Month name displayed below the calendar */}
-                <div style={{
-                    gridColumn: 'span 4', textAlign: 'center', marginTop: '50px', fontWeight: 'bold',
-                    fontSize: "14px",
-                    color: "#fff"
-                }}>
-                    {monthName.substring(0, 3)}
-                </div>
-            </div>
-        );
-    };
+    const streakData = generateStreakData();
 
     return (
-        <div>
-            <h2>Your Yearly Streak</h2>
-            <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(12, 80px)",
-                gap: '10px', // Space between each month block
-                background: "#282828",
-                width: "fit-content",
-                padding: "10px",
-                margin: "0 auto",
-            }}>
-                {datesByMonth.map((monthDates, index) => renderMonth(monthDates, index))}
-            </div>
+        <Box p={4} bg={"#2d2d2d"} mt={4} borderRadius={"6px"} pb={6}>
 
-            <div style={{
-                width: "50px",
-                height: "50px",
-                backgroundImage: "conic-gradient(red, yellow, green)",
-                borderRadius:"50%"
-            }}></div>
-        </div>
+            <Flex
+                justifyContent={"space-between"} alignItems={"center"}
+                width={"100%"}
+                p={2}
+            >
+                <Text gap={"5px"} color={"#b4bdc2"} display={"flex"} alignItems={"center"}>
+                    <b style={{ fontSize: "18px", color: "white" }}>99</b>
+                    {" "}<Text>submissions in the past one year</Text>
+                </Text>
+                <Flex
+                    fontSize={"12px"}
+                    color={"#b4bdc2"}
+                    alignItems={"center"}
+                    gap={4}
+                >
+                    <Flex gap={"5px"}>
+                        <Text>Total active day:{" "}</Text>{" "}
+                        <Text>31</Text>
+                    </Flex>
+                    <Flex gap={"5px"}>
+                        <Text>Max streak:{" "}</Text>{" "}
+                        <Text>{" "}31</Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+
+            <Flex justifyContent="center">
+                <CalendarHeatmap
+                    startDate={new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
+                    endDate={new Date()}
+                    values={streakData}
+                    classForValue={(value) => {
+                        if (!value) {
+                            return 'color-empty'; // CSS class for no activity
+                        }
+                        return `color-scale-${value.count}`; // CSS class based on activity count
+                    }}
+                    tooltipDataAttrs={(value) => {
+                        return {
+                            'data-tip': `${value.date}: ${value.count} streak`,
+                        };
+                    }}
+                    showMonthLabels={true} // Show month labels at the bottom
+                />
+            </Flex>
+        </Box>
     );
 };
 
