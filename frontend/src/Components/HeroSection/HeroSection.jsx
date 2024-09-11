@@ -13,8 +13,7 @@ import {
 import AnimatedButton from '../AnimatedButton/AnimatedButton'
 import AnimatedBoxes from '../Animated/Animated'
 import VerticalLines from '../VeticalLine/VerticalLines'
-import AnimatedCircles from '../AnimatedCircles/AnimatedCircles'
-import ScrollingDivs from '../ScrollingDivs/ScrollingDivs'
+import { Link } from 'react-router-dom'
 
 
 
@@ -49,11 +48,15 @@ export default function HeroSection() {
                         _hover={{ bg: 'orange.500' }}>
                         Get started
                     </Button> */}
-                    <AnimatedButton value={"Get Started"} color={"#ed8936"} />
-                    {/* <Button rounded={'full'} px={6}>
+                    <Link to={'/all/problemset'}>
+                        <AnimatedButton value={"Get Started"} color={"#ed8936"} />
+                        {/* <Button rounded={'full'} px={6}>
                         Create Account
                     </Button> */}
-                    <AnimatedButton value={"Create Account"} color={"#fff"} />
+                    </Link>
+                    <Link to={'/auth/register'}>
+                        <AnimatedButton value={"Create Account"} color={"#fff"} />
+                    </Link>
                 </Stack>
                 <Flex w={'full'} justifyContent={"center"}>
                     <Image width={"400px"} src='./hero1.png' />

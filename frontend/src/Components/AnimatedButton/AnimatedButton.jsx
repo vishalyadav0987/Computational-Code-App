@@ -25,7 +25,7 @@ export default function AnimatedButton({ value }) {
     });
 
     return (
-        <Dialog.Root open={isOpen} onOpenChange={handleDialogChange}>
+        <Dialog.Root open={isOpen}>
             <Trigger>
                 <TriggerShadow />
                 <TriggerEdge />
