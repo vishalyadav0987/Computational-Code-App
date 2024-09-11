@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../../Components/Navbar/Navbar'
 import HeroSection from '../../Components/HeroSection/HeroSection'
 import Statistics from '../../Components/Statistics/Statistics'
 import { Box, Button, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react'
@@ -8,7 +7,6 @@ import SimpleComponent from '../../Components/Simple/SimpleComponent'
 import IconDesign from '../../Components/IconDesign/IconDesign'
 import CodeEditor from '../../Components/CodeEditor/CodeEditor'
 import WithSpeechBubbles from '../../Components/Testomonial/Testomonial'
-import Footer from '../../Components/Footer/Footer'
 import { FaArrowUp } from 'react-icons/fa'
 
 const Home = () => {
@@ -37,7 +35,6 @@ const Home = () => {
     return (
         <Box width={"full"} position={"relative"}>
 
-            <Navbar />
             <HeroSection />
 
             <Box width={"80%"} margin={"0 auto"} mb={"80px"}>
@@ -91,7 +88,6 @@ const Home = () => {
                     </Button>
                 )
             }
-            <Footer />
         </Box>
     )
 }
