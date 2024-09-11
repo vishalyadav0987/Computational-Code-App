@@ -90,3 +90,25 @@ html {
 
 
 
+/* Add custom color scale for streaks */
+.color-empty {
+  fill: #ebedf0;
+}
+
+.color-scale-1 {
+  fill: #c6e48b;
+}
+
+.color-scale-2 {
+  fill: #7bc96f;
+}
+
+.color-scale-3 {
+  fill: #239a3b;
+}
+
+/* Style for the month labels */
+.react-calendar-heatmap text {
+  font-size: 10px; /* Adjust font size if needed */
+  fill: #333; /* Color for the month labels */
+}
