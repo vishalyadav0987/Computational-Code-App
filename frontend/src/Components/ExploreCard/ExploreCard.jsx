@@ -10,18 +10,43 @@ import {
     Image,
     Avatar,
     Flex,
+    Tag,
 } from '@chakra-ui/react'
 import Actions from '../Actions/Actions'
 import { IoMdEye } from 'react-icons/io'
+import { formatDistanceToNow } from 'date-fns'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { clearError, incrementViews } from '../../redux/actions/devspaceActions'
 
-const IMAGE =
-    'https://media.licdn.com/dms/image/D4D12AQE3FvBP8AuYZQ/article-cover_image-shrink_600_2000/0/1694524292210?e=2147483647&v=beta&t=nITcDqwaDc1vbY9STqr-KYmZV9kiJaNofC1cZyUmqwc'
 
-export default function ExploreCard() {
+export default function ExploreCard({ project }) {
+    const dispatch = useDispatch();
+    const { views, error } = useSelector((state) => state.views);
+
+    const handleClickIncrementView = (id, link) => {
+        dispatch(incrementViews(id)).then(() => {
+            window.open(link, "_blank");
+        }).catch((error) => {
+            console.error('Error incrementing views:', error);
+        });
+    };
+
+    // Access specific view count for the project
+    const viewCount = views[project._id] || project.noOfView;
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch(clearError());
+        }
+        console.log("Updated views: ", views); // Debugging line
+    }, [dispatch, error, views]);
+
     return (
         <Center py={10}>
-            <Box
-                role={'group'}
+            <Box role={'group'}
                 px={6}
                 py={4}
                 maxW={'330px'}
@@ -30,65 +55,85 @@ export default function ExploreCard() {
                 boxShadow={'2xl'}
                 rounded={'lg'}
                 pos={'relative'}
-                zIndex={1}>
+                zIndex={1}
+                cursor="pointer">
                 <Box
-                    rounded={'lg'}
-                    mt={-12}
-                    pos={'relative'}
-                    height={'230px'}
-                    _after={{
-                        transition: 'all .3s ease',
-                        content: '""',
-                        w: 'full',
-                        h: 'full',
-                        pos: 'absolute',
-                        top: 5,
-                        left: 0,
-                        // backgroundImage: `url(${IMAGE})`,
-                        filter: 'blur(2px)',
-                        zIndex: -1,
-                    }}
-                    _groupHover={{
-                        _after: {
-                            filter: 'blur(5px)',
-                        },
-                    }}>
-                    <Image
+                    onClick={() => handleClickIncrementView(project?._id, project?.websiteUrl)}
+                >
+                    <Box
                         rounded={'lg'}
-                        height={230}
-                        width={282}
-                        objectFit={'cover'}
-                        src={IMAGE}
-                        alt="#"
-                    />
-                </Box>
-                <Stack pt={10} align={'start'} mb={3}>
-                    <Flex
-                        color={'gray.500'}
-                        fontSize={'sm'} t
-                        extTransform={'uppercase'}
-                        justifyContent={"space-between"}
-                        alignItems={"center"}
-                        width={"100%"}
-                    >
-                        <Text>Brand</Text>
-                        <Text
-                            display={"flex"}
+                        mt={-12}
+                        pos={'relative'}
+                        height={'230px'}
+                        _after={{
+                            transition: 'all .3s ease',
+                            content: '""',
+                            w: 'full',
+                            h: 'full',
+                            pos: 'absolute',
+                            top: 5,
+                            left: 0,
+                            filter: 'blur(2px)',
+                            zIndex: -1,
+                        }}
+                        _groupHover={{
+                            _after: {
+                                filter: 'blur(5px)',
+                            },
+                        }}>
+                        <Image
+                            rounded={'lg'}
+                            height={230}
+                            width={282}
+                            objectFit={'cover'}
+                            src={project && project?.frontImage}
+                            alt="#"
+                        />
+                    </Box>
+                    <Stack pt={10} align={'start'} mb={3}>
+                        <Flex
+                            color={'gray.500'}
+                            fontSize={'sm'}
+                            justifyContent={"space-between"}
                             alignItems={"center"}
-                            gap={1}>45 <IoMdEye fontSize={"16px"} /></Text>
-                    </Flex>
-                    <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
-                        Nice Chair, pink
-                    </Heading>
-                </Stack>
-                <Stack my={3} direction={'row'} spacing={4} align={'center'}>
-                    <Avatar src={'https://avatars0.githubusercontent.com/u/1164541?v=4'} />
-                    <Stack direction={'column'} spacing={0} fontSize={'sm'}>
-                        <Text fontWeight={600}>Achim Rolle</Text>
-                        <Text color={'gray.500'}>Feb 08, 2021 · 6min read</Text>
+                            width={"100%"}
+                        >
+                            <Tag>{project?.projectRelatedTo}</Tag>
+                            <Text display={"flex"} alignItems={"center"} gap={1}>
+                                {viewCount} <IoMdEye fontSize={"16px"} />
+                            </Text>
+                        </Flex>
+                        <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
+                            {project?.projectTitle}
+                        </Heading>
                     </Stack>
-                </Stack>
-                <Actions />
+                    <Stack my={3} direction={'row'} spacing={4} align={'center'}>
+                        <Avatar src={project?.pushedUserId?.profile?.profilePic}
+                            onClick={(e) => e.preventDefault()}
+                        />
+                        <Stack direction={'column'} spacing={0} fontSize={'sm'}>
+                            <a href={`/user/${project?.pushedUserId?.username}`}
+                                style={{
+                                    textDecoration: "none",
+                                    transition: "all 0.3s ease"
+                                }}
+                                target='_blank'
+                            >
+                                <Text
+                                    _hover={{
+                                        color: "#ed8936"
+                                    }}
+                                    textDecoration={"none"}
+                                    fontWeight={600}>{project?.pushedUserId?.username}</Text>
+                            </a>
+                            <Text color={'gray.500'}>
+                                {new Date(project.createdAt).toLocaleDateString()} · {" "}
+                                {formatDistanceToNow(new Date(project?.createdAt))}
+                            </Text>
+                        </Stack>
+                    </Stack>
+                </Box>
+                <Actions project={project} />
             </Box>
         </Center>
     )
