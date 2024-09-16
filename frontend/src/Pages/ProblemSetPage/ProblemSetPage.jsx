@@ -88,7 +88,7 @@ const ProblemSetPage = () => {
                                     <FaTimesCircle color="red" />
                                 )}
                             </Td>
-                            <Link to={`/problem/description/${"two-sum"}`}>
+                            <Link to={`/problem/${"two-sum"}/description`}>
                                 <Td _hover={{ color: "#ed8936" }}>{problem.title}</Td>
                             </Link>
                             <Td>
