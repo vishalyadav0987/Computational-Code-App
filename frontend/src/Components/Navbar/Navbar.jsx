@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Flex,
@@ -13,12 +13,27 @@ import {
     MenuItem,
     Tooltip,
     Avatar,
+    Spinner,
+    Popover,
+    PopoverTrigger,
+    Divider,
+    Portal,
+    PopoverContent,
+    PopoverArrow,
+    PopoverHeader,
+    PopoverCloseButton,
+    PopoverBody,
+    Text,
 } from '@chakra-ui/react';
+import { ImProfile } from "react-icons/im";
+import { IoIosLogOut } from "react-icons/io";
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { MdAssignmentInd } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo-4.png';
 import { IoIosArrowDown } from "react-icons/io";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/actions/userActions';
 
 
 const Links = [
@@ -36,9 +51,26 @@ const interviewLinks = [
     { tag: "Topic Wise", link: "/topic-related/dsa-sheet" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ token }) {
+    const location = useLocation();
+    const dispatch = useDispatch()
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [colorLink, setLinkColor] = useState("Home");
+    const { user, isAuthenticate, loading } = useSelector(state => state.user)
+
+    if (loading) {
+        return (
+            <>
+                <Flex h={"100vh"} align={"center"} justifyContent={"center"} width={"100%"}>
+                    <Spinner size={"lg"} />
+                </Flex>
+            </>
+        )
+    }
+
+    const handleLogout = async () => {
+        dispatch(logout())
+    }
 
     return (
         <>
@@ -121,26 +153,87 @@ export default function Navbar() {
                         </HStack>
                     </HStack>
                     <Flex alignItems="center" gap={4}>
-                        <Link to={`user/${"vishalyadav"}`}>
-                            <Avatar src='' size={"sm"} />
-                        </Link>
-                        <Link to={'/auth/login'}>
-                            <Button
-                                color={"white"}
-                                variant="solid"
-                                colorScheme={'orange'}
-                                bg={'orange.400'}
-                                _hover={{ bg: 'orange.500' }}
-                                size="sm"
-                                mr={4}
-                                leftIcon={<MdAssignmentInd fontSize={"16px"} />}
-                            >
-                                Sign in
-                            </Button>
-                        </Link>
+                        {
+                            isAuthenticate && user && (
+                                <>
+                                    <Popover
+                                        trigger={'hover'}
+                                        placement={'bottom-start'}
+                                        bg="#373737">
+                                        <PopoverTrigger>
+                                            <Link to={`/user/${user && user?.username}`}>
+                                                <Avatar src={
+                                                    user?.profile?.profilePic
+                                                } size={"sm"} />
+                                            </Link>
+                                        </PopoverTrigger>
+
+                                        <Portal>
+                                            <PopoverContent>
+                                                <PopoverArrow />
+                                                <PopoverHeader>Header</PopoverHeader>
+                                                <PopoverCloseButton />
+                                                <PopoverBody>
+                                                    {
+                                                        user &&
+                                                        <>
+                                                            <Box
+                                                                _hover={{
+                                                                    bg: ""
+                                                                }}>
+                                                                <Link
+                                                                    to={
+                                                                        `/user/${user && user?.username}`
+                                                                    }
+                                                                    style={{
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        gap: "8px",
+                                                                        marginBottom: "12px"
+                                                                    }}>
+                                                                    <ImProfile />
+                                                                    <Text>View Profile</Text>
+                                                                </Link>
+                                                            </Box>
+                                                            <Divider mb={3} />
+                                                            <Flex
+                                                                onClick={handleLogout}
+                                                                cursor={"pointer"}
+                                                                gap={"8px"}
+                                                                alignItems={"center"}
+                                                            >
+                                                                <IoIosLogOut />
+                                                                <Text>Sign out</Text>
+                                                            </Flex>
+                                                        </>
+                                                    }
+                                                </PopoverBody>
+                                            </PopoverContent>
+                                        </Portal>
+                                    </Popover>
+                                </>
+                            )
+                        }
+                        {!isAuthenticate && !user && (
+                            <Link to={'/auth/login'}>
+                                <Button
+                                    color={"white"}
+                                    variant="solid"
+                                    colorScheme={'orange'}
+                                    bg={'orange.400'}
+                                    _hover={{ bg: 'orange.500' }}
+                                    size="sm"
+                                    mr={4}
+                                    leftIcon={<MdAssignmentInd fontSize={"16px"} />}
+                                >
+                                    Sign in
+                                </Button>
+                            </Link>
+                        )}
+
                     </Flex>
                 </Flex>
-            </Box>
+            </Box >
         </>
     );
 }
