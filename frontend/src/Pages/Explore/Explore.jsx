@@ -1,12 +1,27 @@
-import React from 'react'
-import { Box, Button, Flex, Grid, Heading, Tooltip, useDisclosure } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
+import { Box, Button, Flex, Grid, Heading, Spinner, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { FaPlus, FaRegStar } from "react-icons/fa";
 import ExploreCard from '../../Components/ExploreCard/ExploreCard';
 import { Link } from 'react-router-dom';
 import PushProject from '../PushProject/PushProject';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { clearError, getAllProjectList } from '../../redux/actions/devspaceActions';
 
 const Explore = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const dispatch = useDispatch();
+    const { projects, error, loading } = useSelector(state => state.getAllProject)
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch(clearError())
+        }
+        if (!isOpen) {
+            dispatch(getAllProjectList());  // Re-fetch projects after the modal is closed
+        }
+    }, [error, dispatch, isOpen])
+   
     return (
         <Box width={"100%"}>
             <Flex
@@ -56,14 +71,31 @@ const Explore = () => {
             <Box width={"80%"}
                 margin={"0 auto"}>
                 <Grid templateColumns='repeat(4, 1fr)' gap={4} rowGap={0}>
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
-                    <ExploreCard />
+                    {
+                        loading ?
+                            (<Flex
+                                width={"80vw"}
+                                height={"70vh"}
+                                justifyContent={"center"}
+                                alignItems={"center"}
+                            >
+                                <Spinner size={"lg"} />
+                            </Flex>) : <>
+                                {
+                                    projects && projects?.length > 0 &&
+                                    projects.map((project) => {
+                                        return (
+                                            <>
+                                                <ExploreCard
+                                                    key={project?._id}
+                                                    project={projects && project}
+                                                />
+                                            </>
+                                        )
+                                    })
+                                }
+                            </>
+                    }
                 </Grid>
             </Box>
             <PushProject isOpen={isOpen} onClose={onClose} />
