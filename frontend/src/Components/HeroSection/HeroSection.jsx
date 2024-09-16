@@ -14,10 +14,12 @@ import AnimatedButton from '../AnimatedButton/AnimatedButton'
 import AnimatedBoxes from '../Animated/Animated'
 import VerticalLines from '../VeticalLine/VerticalLines'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 
 
 export default function HeroSection() {
+    const { user, isAuthenticate } = useSelector(state => state.user)
     return (
         <Container maxW={'5xl'} position={"relative"} zIndex={"5"}>
             <VerticalLines />
@@ -54,8 +56,10 @@ export default function HeroSection() {
                         Create Account
                     </Button> */}
                     </Link>
-                    <Link to={'/auth/register'}>
-                        <AnimatedButton value={"Create Account"} color={"#fff"} />
+                    <Link to={isAuthenticate ? "/explore/developer-space" : '/auth/register'}>
+                        <AnimatedButton value={
+                            isAuthenticate ? "Devspace" : "Create Account"
+                            } color={"#fff"} />
                     </Link>
                 </Stack>
                 <Flex w={'full'} justifyContent={"center"}>
